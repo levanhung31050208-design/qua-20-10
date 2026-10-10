@@ -2,75 +2,95 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Món quà 20/10 🌹</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Món quà 20/10 ❤️</title>
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;min-height:100vh;overflow:hidden;
- display:flex;align-items:center;justify-content:center;
- font-family:Georgia,serif;text-align:center;color:white;
- background:radial-gradient(ellipse at top,#69203f,#200b20 65%,#080611);
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #190713;
+  color: white;
+  font-family: Georgia, serif;
+  text-align: center;
 }
-#scene{width:100%;padding:24px;position:relative;z-index:2}
-h1{color:#ffd1e3;text-shadow:0 0 18px #ff4b9a}
-p{line-height:1.8}
-.gift{font-size:100px;animation:float 2s infinite ease-in-out;filter:drop-shadow(0 0 20px #ff75b5)}
-button{
- border:0;border-radius:30px;padding:15px 28px;
- background:linear-gradient(135deg,#ff8dbd,#d4145a);
- color:white;font-size:17px;font-weight:bold;
- box-shadow:0 0 25px #ff4d98;cursor:pointer;
+#start {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  background: radial-gradient(circle, #752344, #190713);
 }
-#surprise{display:none}
-.rose{font-size:80px;animation:bloom 2s ease-in-out infinite alternate}
-.message{font-size:23px;color:#ffd4e7;animation:glow 1.5s infinite alternate}
-.heart{position:fixed;bottom:-40px;animation:rise linear forwards;pointer-events:none}
-@keyframes float{50%{transform:translateY(-15px) rotate(4deg)}}
-@keyframes bloom{to{transform:scale(1.12)}}
-@keyframes glow{to{text-shadow:0 0 18px #ff62b0}}
-@keyframes rise{to{transform:translateY(-115vh) rotate(360deg);opacity:0}}
+.gift {
+  font-size: 100px;
+  animation: float 2s infinite ease-in-out;
+}
+h1 {
+  color: #ffd0e4;
+  text-shadow: 0 0 15px #ff4b9a;
+}
+button {
+  padding: 15px 26px;
+  border: none;
+  border-radius: 30px;
+  background: #ed4388;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+#videoScreen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background: black;
+  overflow: hidden;
+}
+#myVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+#backMessage {
+  position: absolute;
+  top: 15px;
+  left: 12px;
+  right: 12px;
+  color: white;
+  font-size: 19px;
+  text-shadow: 0 0 8px #ff2f87;
+  pointer-events: none;
+}
+@keyframes float {
+  50% { transform: translateY(-14px); }
+}
 </style>
 </head>
 <body>
-<div id="scene">
- <section id="start">
+<section id="start">
   <div class="gift">🎁</div>
-  <h1>Một món quà dành cho em</h1>
+  <h1>Một món quà dành cho em 🌹</h1>
   <p>Có một điều dễ thương đang chờ em...</p>
   <button onclick="openGift()">MỞ MÓN QUÀ ❤️</button>
- </section>
- <section id="surprise">
-  <div class="rose">💐</div>
-  <h1>Chúc mừng ngày 20/10</h1>
-  <p class="message" id="typing"></p>
-  <div style="font-size:30px">💗 💖 💗</div>
-  <p>Mong em luôn xinh đẹp, vui vẻ và hạnh phúc 🌹</p>
- </section>
-</div>
+</section>
+<section id="videoScreen">
+  <video id="myVideo" playsinline controls>
+    <source src="./hoa.mp4.mp4" type="video/mp4">
+    Trình duyệt không phát được video này.
+  </video>
+  <div id="backMessage">Chúc em 20/10 luôn vui vẻ và hạnh phúc ❤️</div>
+</section>
 <script>
-function openGift(){
- document.getElementById('start').style.display='none';
- document.getElementById('surprise').style.display='block';
- const msg='Chúc em luôn được yêu thương... ❤️';
- let i=0;
- function type(){
-  if(i<msg.length){
-   document.getElementById('typing').textContent+=msg[i++];
-   setTimeout(type,110);
-  }
- }
- type();
- setInterval(()=>{
-  const h=document.createElement('div');
-  h.className='heart';
-  h.textContent=['❤️','💗','💕','💖'][Math.floor(Math.random()*4)];
-  h.style.left=Math.random()*100+'vw';
-  h.style.fontSize=(18+Math.random()*25)+'px';
-  h.style.animationDuration=(3+Math.random()*4)+'s';
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),7000);
- },250);
+function openGift() {
+  document.getElementById('start').style.display = 'none';
+  document.getElementById('videoScreen').style.display = 'block';
+  const video = document.getElementById('myVideo');
+  video.play().catch(() => {
+    video.setAttribute('controls', '');
+  });
 }
 </script>
 </body>
