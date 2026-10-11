@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lời Chúc</title>
+<style>
+  :root { --bg: #fff5f7; --fg: #3a2a30; --accent: #e0457b; --card: #ffffff; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #1e1418; --fg: #f5e9ee; --card: #2a1d23; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 16px;
+         background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; }
+  .card { background: var(--card); max-width: 520px; width: 100%; padding: 32px 24px;
+          border-radius: 20px; box-shadow: 0 10px 40px rgba(224,69,123,.2); text-align: center; }
+  h1 { color: var(--accent); margin: 0 0 16px; font-size: 1.8rem; }
+  #msg { font-size: 1.3rem; line-height: 1.6; white-space: pre-wrap; animation: pop .8s ease; }
+  @keyframes pop { from { opacity: 0; transform: scale(.9); } to { opacity: 1; transform: none; } }
+  textarea, input { width: 100%; padding: 12px; font: inherit; border-radius: 10px; border: 1px solid #ccc; margin-bottom: 12px; }
+  button { background: var(--accent); color: #fff; border: 0; padding: 12px 20px; border-radius: 10px; font: inherit; cursor: pointer; }
+  #qr { margin: 20px auto 8px; width: fit-content; padding: 12px; background: #fff; border-radius: 12px; }
+  #link { word-break: break-all; font-size: .85rem; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<!-- Người nhận quét QR -> thấy phần này -->
+<div class="card" id="view" hidden>
+  <h1 id="title">🎉</h1>
+  <div id="msg"></div>
+</div>
+
+<!-- Người gửi mở trang không có tham số -> tạo QR -->
+<div class="card" id="maker" hidden>
+  <h1>Tạo QR lời chúc</h1>
+  <input id="t" placeholder="Tiêu đề (vd: Chúc mừng sinh nhật!)" maxlength="60">
+  <textarea id="m" rows="4" placeholder="Nội dung lời chúc..." maxlength="300"></textarea>
+  <button id="go">Tạo QR</button>
+  <div id="qr" hidden></div>
+  <a id="link" target="_blank"></a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  const p = new URLSearchParams(location.search);
+  if (p.has('m')) {
+    document.getElementById('view').hidden = false;
+    document.getElementById('title').textContent = p.get('t') || '🎉 Gửi bạn 🎉';
+    document.getElementById('msg').textContent = p.get('m'); // textContent: không chèn HTML lạ
+  } else {
+    document.getElementById('maker').hidden = false;
+    document.getElementById('go').onclick = () => {
+      const m = document.getElementById('m').value.trim();
+      if (!m) return alert('Nhập lời chúc trước nhé');
+      const q = new URLSearchParams({ t: document.getElementById('t').value.trim(), m });
+      const url = location.origin + location.pathname + '?' + q;
+      const box = document.getElementById('qr');
+      box.innerHTML = ''; box.hidden = false;
+      new QRCode(box, { text: url, width: 240, height: 240 });
+      const a = document.getElementById('link'); a.href = a.textContent = url;
+    };
+  }
+</script>
+</body>
+</html>
